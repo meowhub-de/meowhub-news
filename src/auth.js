@@ -16,6 +16,7 @@ async function client() {
     client_secret: LOGTO_CLIENT_SECRET,
     redirect_uris: [callbackUrl()],
     response_types: ['code'],
+    id_token_signed_response_alg: process.env.LOGTO_ID_TOKEN_SIGNING_ALG || 'ES384',
   }));
   return clientPromise;
 }
