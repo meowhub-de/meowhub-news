@@ -1,0 +1,33 @@
+services:
+  meowhub-news:
+    build: .
+    image: meowhub-news:latest
+    restart: unless-stopped
+    init: true
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${PORT:-3000}
+      APP_URL: https://${DOMAIN}
+      SESSION_SECRET: ${SESSION_SECRET}
+      DATA_DIR: /data
+      LOGTO_ISSUER: ${LOGTO_ISSUER}
+      LOGTO_CLIENT_ID: ${LOGTO_CLIENT_ID}
+      LOGTO_CLIENT_SECRET: ${LOGTO_SECRET}
+      LOGTO_SCOPES: ${LOGTO_SCOPES:-openid profile email}
+      LOGTO_ADMIN_EMAILS: ${LOGTO_ADMIN_EMAILS}
+    volumes:
+      - meowhub_news_data:/data
+    networks:
+      - dockhand_proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.meowhub-news.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.meowhub-news.entrypoints=websecure
+      - traefik.http.routers.meowhub-news.tls=true
+      - traefik.http.services.meowhub-news.loadbalancer.server.port=3000
+volumes:
+  meowhub_news_data:
+    name: meowhub_news_data
+networks:
+  dockhand_proxy:
+    external: true

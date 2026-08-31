@@ -1,0 +1,12 @@
+import express from 'express';
+import cookieSession from 'cookie-session';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {listNews,createNews,deleteNews} from './store.js';
+import {generateFeed} from './feed.js';
+import {login,callback,requireAdmin,logout} from './auth.js';
+const root=path.dirname(fileURLToPath(import.meta.url)),app=express();
+app.set('trust proxy',1);app.use(express.json());app.use(express.urlencoded({extended:false}));app.use(cookieSession({name:'meowhub_session',keys:[process.env.SESSION_SECRET||'development-only-secret'],httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',maxAge:28800000}));
+app.get('/health',(_,r)=>r.json({ok:true}));app.get('/api/news',async(_,r,n)=>{try{r.json(await listNews())}catch(e){n(e)}});app.get('/feed.xml',async(_,r,n)=>{try{r.type('application/rss+xml').send(await generateFeed())}catch(e){n(e)}});app.get('/auth/login',login);app.get('/auth/callback',callback);app.get('/auth/logout',logout);app.get('/api/admin/me',requireAdmin,(q,r)=>r.json(q.session.user));
+app.post('/api/admin/news',requireAdmin,async(q,r,n)=>{try{if(!q.body.title||!q.body.content)return r.status(400).json({error:'Titel und Inhalt sind erforderlich.'});const x=await createNews(q.body);await generateFeed();r.status(201).json(x)}catch(e){n(e)}});app.delete('/api/admin/news/:id',requireAdmin,async(q,r,n)=>{try{const ok=await deleteNews(q.params.id);await generateFeed();r.status(ok?204:404).end()}catch(e){n(e)}});app.get('/admin',(_,r)=>r.sendFile(path.join(root,'..','public','admin.html')));app.use(express.static(path.join(root,'..','public')));app.use((e,_,r,__)=>(console.error(e),r.status(500).json({error:'Interner Serverfehler.'})));
+app.listen(Number(process.env.PORT||3000),()=>console.log(`MeowHub News listening on ${process.env.PORT||3000}`));
