@@ -3,7 +3,7 @@ import {generators, Issuer} from 'openid-client';
 let clientPromise;
 
 function callbackUrl() {
-  return process.env.APP_URL + '/auth/callback';
+  return process.env.APP_URL + '/oidc/callback';
 }
 
 async function client() {
