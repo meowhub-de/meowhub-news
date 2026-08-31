@@ -1,7 +1,6 @@
 services:
   meowhub-news:
     build: .
-    image: meowhub-news:latest
     restart: unless-stopped
     init: true
     environment:
@@ -15,6 +14,8 @@ services:
       LOGTO_CLIENT_SECRET: ${LOGTO_SECRET}
       LOGTO_SCOPES: ${LOGTO_SCOPES:-openid profile email}
       LOGTO_ADMIN_EMAILS: ${LOGTO_ADMIN_EMAILS}
+    ports:
+      - "${HOST_PORT:-3000}:3000"
     volumes:
       - meowhub_news_data:/data
     networks:
@@ -30,4 +31,5 @@ volumes:
     name: meowhub_news_data
 networks:
   dockhand_proxy:
-    external: true
+    name: ${DOCKHAND_PROXY_NETWORK:-dockhand_proxy}
+    external: ${DOCKHAND_PROXY_EXTERNAL:-false}
