@@ -119,7 +119,9 @@ export function createApp({adminGuard = requireAdmin} = {}) {
   app.use(express.static(publicDir, {maxAge: process.env.NODE_ENV === 'production' ? '1h' : 0}));
   app.use('/api', (_, res) => res.status(404).json({error: 'API-Endpunkt nicht gefunden.'}));
   app.use((error, _, res, __) => {
-    if (!error.status || error.status >= 500) console.error(error);
+    if (!error.status || error.status >= 500) {
+      console.error(error.message || 'Unhandled application error');
+    }
     res.status(error.status || 500).json({
       error: error.status ? error.message : 'Interner Serverfehler.',
     });
