@@ -83,6 +83,7 @@ export function createApp({adminGuard = requireAdmin} = {}) {
   });
 
   app.get('/auth/login', login);
+  app.get('/oidc/callback', callback);
   app.get('/auth/callback', callback);
   app.get('/auth/logout', logout);
 
