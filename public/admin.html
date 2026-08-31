@@ -1,1 +1,115 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin – MeowHub News</title><link rel="stylesheet" href="/styles.css"></head><body><header><b>🐾 MeowHub News / Admin</b><nav><a href="/">Öffentliche Seite</a><a href="/auth/logout">Abmelden</a></nav></header><main class="admin"><section><small>REDAKTION</small><h1>News verwalten</h1><form id="news-form"><input name="title" placeholder="Titel" required><input name="url" type="url" placeholder="Externe URL (optional)"><input name="author" placeholder="Autor" value="MeowHub Redaktion"><textarea name="summary" placeholder="Kurzfassung"></textarea><textarea name="content" placeholder="Inhalt" required></textarea><button>News veröffentlichen</button><p id="status"></p></form></section><section><h2>Veröffentlichte News</h2><div id="admin-news"></div></section></main><script src="/admin.js"></script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#05070d">
+  <title>Newsroom – MeowHub News</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="admin-body">
+  <header class="site-header admin-header">
+    <a class="brand" href="/" aria-label="MeowHub News Startseite">
+      <span class="brand-mark">M</span>
+      <span><strong>MeowHub</strong><small>Newsroom</small></span>
+    </a>
+    <nav class="header-actions" aria-label="Admin-Navigation">
+      <span class="user-chip" id="user-name">Redaktion</span>
+      <a class="button button-ghost" href="/">Öffentliche Seite</a>
+      <a class="button button-orange" href="/auth/logout">Abmelden</a>
+    </nav>
+  </header>
+
+  <main class="admin-shell">
+    <section class="panel editor-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="eyebrow">Redaktionssystem</span>
+          <h1 id="editor-title">Neue Meldung</h1>
+        </div>
+        <span class="live-dot">Auto-Save bereit</span>
+      </div>
+
+      <form id="news-form">
+        <div class="field-grid">
+          <label class="field field-wide">
+            <span>Titel</span>
+            <input name="title" maxlength="180" placeholder="Was ist passiert?" required>
+          </label>
+          <label class="field">
+            <span>Autor</span>
+            <input name="author" maxlength="100" value="MeowHub Redaktion" required>
+          </label>
+          <label class="field">
+            <span>Status</span>
+            <select name="status">
+              <option value="published">Veröffentlicht</option>
+              <option value="draft">Entwurf</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Veröffentlichung</span>
+            <input name="publishedAt" type="datetime-local">
+          </label>
+          <label class="field">
+            <span>Quelle / Link</span>
+            <input name="url" type="url" placeholder="https://…">
+          </label>
+          <label class="field field-wide">
+            <span>Kurzfassung <small id="summary-count">0 / 500</small></span>
+            <textarea name="summary" maxlength="500" rows="3" placeholder="Der schnelle Überblick für die Startseite"></textarea>
+          </label>
+          <label class="field field-wide">
+            <span>Volltext</span>
+            <textarea name="content" maxlength="20000" rows="10" placeholder="Die vollständige Meldung …" required></textarea>
+          </label>
+          <label class="toggle field-wide">
+            <input name="featured" type="checkbox">
+            <span>Als Top-Meldung hervorheben</span>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button class="button button-primary" type="submit" id="submit-label">Meldung veröffentlichen</button>
+          <button class="button button-ghost" type="button" id="preview-form">Vorschau</button>
+          <button class="button button-ghost" type="button" id="cancel-edit" hidden>Bearbeitung abbrechen</button>
+          <span class="form-status" id="status" role="status"></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="workspace">
+      <div class="stats-grid" aria-label="Redaktionsstatistik">
+        <article class="stat-card"><span>Gesamt</span><strong id="stat-total">0</strong></article>
+        <article class="stat-card stat-blue"><span>Veröffentlicht</span><strong id="stat-published">0</strong></article>
+        <article class="stat-card stat-orange"><span>Entwürfe</span><strong id="stat-drafts">0</strong></article>
+      </div>
+
+      <section class="panel list-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="eyebrow">Content Library</span>
+            <h2>Alle Meldungen</h2>
+          </div>
+          <div class="list-tools">
+            <label class="search-field"><span class="sr-only">Suchen</span><input id="search" type="search" placeholder="Meldungen durchsuchen"></label>
+            <label><span class="sr-only">Status filtern</span><select id="filter-status"><option value="all">Alle Status</option><option value="published">Veröffentlicht</option><option value="draft">Entwürfe</option></select></label>
+          </div>
+        </div>
+        <div id="admin-news" class="admin-news-list" aria-live="polite"></div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="preview-dialog" class="preview-dialog">
+    <button class="dialog-close" type="button" aria-label="Vorschau schließen">×</button>
+    <span class="eyebrow">Vorschau</span>
+    <h2 id="preview-title"></h2>
+    <p id="preview-meta" class="preview-meta"></p>
+    <p id="preview-summary" class="preview-summary"></p>
+    <div id="preview-content" class="preview-content"></div>
+    <a id="preview-link" class="button button-ghost" target="_blank" rel="noopener noreferrer" hidden>Quelle öffnen</a>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/admin.js"></script>
+</body>
+</html>

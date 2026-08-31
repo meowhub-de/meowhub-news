@@ -1,1 +1,75 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MeowHub News</title><link rel="stylesheet" href="/styles.css"></head><body><header><b>🐾 MeowHub News</b><nav><a href="/feed.xml">RSS abonnieren</a><a href="/admin">Admin</a></nav></header><main><section class="hero"><small>DER INDIVIDUELLE NEWSFEED</small><h1>Neuigkeiten aus<br><i>MeowHub</i></h1><p>Kuratiert, kompakt und direkt aus deiner Community.</p></section><section id="news" class="grid">Lade News …</section></main><script src="/app.js"></script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#05070b">
+  <meta name="description" content="Releases, Projekte und Geschichten aus dem MeowHub.">
+  <title>MeowHub News — Signal aus dem Hub</title>
+  <link rel="alternate" type="application/rss+xml" title="MeowHub News RSS" href="/feed.xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#news">Direkt zu den News</a>
+  <div class="ambient ambient-blue" aria-hidden="true"></div>
+  <div class="ambient ambient-orange" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="MeowHub News Startseite">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span><strong>MEOWHUB</strong><small>NEWSROOM</small></span>
+    </a>
+    <nav aria-label="Hauptnavigation">
+      <a class="nav-link" href="/feed.xml"><span class="nav-dot orange"></span>RSS Feed</a>
+      <a class="button button-ghost button-small" href="/admin">Redaktion <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span> Live aus dem MeowHub</p>
+        <h1>Signal statt<br><span>Rauschen.</span></h1>
+        <p class="hero-lead">Releases, Projekte und Geschichten aus unserer digitalen Werkstatt. Direkt, ehrlich und ohne Algorithmus.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#news">Updates entdecken <span aria-hidden="true">↓</span></a>
+          <a class="text-link" href="/feed.xml">Als RSS abonnieren <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="hero-console" aria-label="MeowHub Systemstatus">
+        <div class="console-top"><span></span><span></span><span></span><code>hub://news/live</code></div>
+        <div class="console-body">
+          <p><span class="prompt">›</span> establishing secure uplink...</p>
+          <p><span class="success">✓</span> channel <strong>MEOW_NEWS</strong> connected</p>
+          <p><span class="prompt">›</span> decoding community signal</p>
+          <div class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="console-meta">
+            <span><small>STATUS</small><strong>ONLINE</strong></span>
+            <span><small>UPDATES</small><strong id="news-count">—</strong></span>
+            <span><small>CHANNEL</small><strong>PUBLIC</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="news-section" aria-labelledby="news-heading">
+      <div class="section-heading">
+        <div><p class="eyebrow">Was gerade passiert</p><h2 id="news-heading">Neueste Signale</h2></div>
+        <div class="section-line" aria-hidden="true"></div>
+        <span class="live-badge"><span class="pulse"></span> aktuell</span>
+      </div>
+      <div id="news" class="news-grid" aria-live="polite" aria-busy="true">
+        <article class="news-card skeleton"></article>
+        <article class="news-card skeleton"></article>
+        <article class="news-card skeleton"></article>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="brand footer-brand">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span><strong>MEOWHUB</strong><small>BUILD · BREAK · LEARN</small></span>
+    </div>
+    <p>Unabhängig gebaut im MeowHub.</p>
+    <div><a href="/feed.xml">RSS</a><a href="/admin">Redaktion</a></div>
+  </footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>

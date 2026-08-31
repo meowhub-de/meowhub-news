@@ -3,6 +3,10 @@ services:
     build: .
     restart: unless-stopped
     init: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     environment:
       NODE_ENV: ${NODE_ENV:-production}
       PORT: ${PORT:-3000}
@@ -14,6 +18,8 @@ services:
       LOGTO_CLIENT_SECRET: ${LOGTO_SECRET}
       LOGTO_SCOPES: ${LOGTO_SCOPES:-openid profile email}
       LOGTO_ADMIN_EMAILS: ${LOGTO_ADMIN_EMAILS}
+    extra_hosts:
+      - "auth.meowhub.de:${LOGTO_INTERNAL_IP:-10.10.10.10}"
     ports:
       - "${HOST_PORT:-3000}:3000"
     volumes:
