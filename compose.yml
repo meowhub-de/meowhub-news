@@ -18,18 +18,15 @@ services:
       - "${HOST_PORT:-3000}:3000"
     volumes:
       - meowhub_news_data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
     networks:
-      - dockhand_proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.meowhub-news.rule=Host(`${DOMAIN}`)
-      - traefik.http.routers.meowhub-news.entrypoints=websecure
-      - traefik.http.routers.meowhub-news.tls=true
-      - traefik.http.services.meowhub-news.loadbalancer.server.port=3000
+      - internal
 volumes:
   meowhub_news_data:
     name: meowhub_news_data
 networks:
-  dockhand_proxy:
-    name: ${DOCKHAND_PROXY_NETWORK:-dockhand_proxy}
-    external: ${DOCKHAND_PROXY_EXTERNAL:-false}
+  internal:
