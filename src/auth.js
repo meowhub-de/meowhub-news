@@ -41,6 +41,12 @@ export async function login(req, res, next) {
 
 export async function callback(req, res, next) {
   try {
+    if (req.query.error) {
+      const description = String(req.query.error_description || req.query.error);
+      return res.status(400).type('text/plain').send(
+        `Anmeldung bei Logto fehlgeschlagen: ${description}`,
+      );
+    }
     const oidc = await client();
     if (!req.session.oidcState || req.session.oidcState !== req.query.state) {
       return res.status(400).send('Ungültiger Login-Status. Bitte starte die Anmeldung erneut.');
